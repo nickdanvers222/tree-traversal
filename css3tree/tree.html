@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="tree.css">
+    <script src="tree.js"></script>
     <title>Document</title>
 </head>
 <body>
-    <div class="tree">
+    <div onClick='testfun()' class="tree">
         <ul>
             <li>
                 <a href="#">Parent</a>
@@ -28,13 +29,14 @@
                                 <a href="#">Grand Child</a>
                                 <ul>
                                     <li>
-                                        <a href="#">Great Grand Child</a>
+                                        <a id='test' href="#">Great Grand Child</a>
                                     </li>
                                     <li>
                                         <a href="#">Great Grand Child</a>
                                     </li>
                                     <li>
                                         <a href="#">Great Grand Child</a>
+                                        <ul></ul>
                                     </li>
                                 </ul>
                             </li>
