@@ -20,13 +20,27 @@ const containerStyles = {
   height: "100vh"
 };
 
-export default class CenteredTree extends React.PureComponent {
-  state = {
-    data: debugData
-  };
+// interface ComponentState {
+//   data:Array<Object>
+// }
 
-  injectedNodesCount = 0;
-
+export default class CenteredTree extends React.PureComponent<{},any> {
+  constructor(props:any) {
+    super(props);  
+    this.state = {
+      data:debugData,
+      size:{},  
+    }};
+    number = 3;
+    refCallback = (element:any) => {
+            if (element) {
+             const dimensions = element.getBoundingClientRect();  
+             this.setState((prev:any) => ({...prev, size:{x: dimensions.width / 2,y: dimensions.height / 2}}));
+      
+            }
+          };
+    
+    
   doSearch = (event:any, theNode:any) => {
     let target = event.name;
     let name;
@@ -54,17 +68,15 @@ export default class CenteredTree extends React.PureComponent {
 
   addChildNode = (event:any) => {
     const nextData = clone(this.state.data);
-    // const target = nextData.children;
-
-    let target = this.doSearch(event, nextData);
-    // console.log(this.doSearch(event, nextData));
+    this.number += 1;
+    let target = this.doSearch(event, nextData)
+    console.log(target)
     target["children"] = [];
     console.log(target);
 
-    this.injectedNodesCount++;
     target.children.push({
-      name: `Inserted Node 321`,
-      id: `inserted-node-${this.injectedNodesCount}`
+      name: `${this.number}`,
+      id: `${this.number}`
     });
     this.setState({
       data: nextData
@@ -72,36 +84,24 @@ export default class CenteredTree extends React.PureComponent {
   };
 
   removeChildNode = () => {
-    const nextData = clone(this.state.data);
-    const target = nextData.children;
-    target.pop();
-    this.injectedNodesCount--;
-    this.setState({
-      data: nextData
-    });
+    // const nextData = clone(this.state.data);
+    // const target = nextData.children;
+    // target.pop();
+    // this.setState({
+    //   data: nextData
+    // });
   };
 
-  componentDidMount() {
-    // Get treeContainer's dimensions so we can center the tree
-    //        const dimensions = element.getBoundingClientRect();
 
-    const dimensions = this.treeContainer.getBoundingClientRect();
-    this.setState({
-      translate: {
-        x: dimensions.width / 2,
-        y: dimensions.height / 2
-      }
-    });
-  }
 
   render() {
     return (
-      <div style={containerStyles} ref={tc => (this.treeContainer = tc)}>
+      <div style={containerStyles} ref={this.refCallback}>
         <button onClick={this.addChildNode}>Add Node</button>
         <button onClick={this.removeChildNode}>Remove Node</button>
         <Tree
           data={this.state.data}
-          translate={this.state.translate}
+          translate={this.state.size}
           orientation={"vertical"}
           onClick={this.addChildNode}
         />
